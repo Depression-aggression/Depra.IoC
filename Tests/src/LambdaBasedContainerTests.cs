@@ -1,7 +1,8 @@
 using Depra.IoC.Containers.Builders.Impl;
+using Depra.IoC.Tests.Abstract;
 using NUnit.Framework;
 
-namespace IoC.Tests
+namespace Depra.IoC.Tests
 {
     public class LambdaBasedContainerTests : BaseContainerTests
     {
