@@ -27,7 +27,7 @@ namespace Depra.IoC.Benchmark
                     .AddColumnProvider(DefaultColumnProviders.Instance);
             }
         }
-        
+
         public interface IService
         {
         }
@@ -46,10 +46,20 @@ namespace Depra.IoC.Benchmark
             }
         }
 
-        private readonly IScope _lambdaBased;
-        private readonly IScope _reflectionBased;
+        private IScope _lambdaBased;
+        private IScope _reflectionBased;
 
-        public ContainerBenchmark()
+        [Benchmark(Baseline = true)]
+        public Controller Create() => new Controller(new Service());
+
+        [Benchmark]
+        public Controller Lambda() => _lambdaBased.Resolve<Controller>();
+
+        [Benchmark]
+        public Controller Reflection() => _reflectionBased.Resolve<Controller>();
+
+        [GlobalSetup]
+        public void GlobalSetup()
         {
             var lambdaBasedBuilder = new LambdaBasedContainerBuilder();
             var reflectionBasedBuilder = new ReflectionBasedContainerBuilder();
@@ -61,15 +71,13 @@ namespace Depra.IoC.Benchmark
             _reflectionBased = reflectionBasedBuilder.Build().CreateScope();
         }
 
-        [Benchmark(Baseline = true)]
-        public Controller Create() => new Controller(new Service());
+        [GlobalCleanup]
+        public void GlobalCleanup()
+        {
+            _lambdaBased.Dispose();
+            _reflectionBased.Dispose();
+        }
         
-        [Benchmark]
-        public Controller Lambda() => _lambdaBased.Resolve<Controller>();
-        
-        [Benchmark]
-        public Controller Reflection() => _reflectionBased.Resolve<Controller>();
-
         private static void InitContainer(IContainerBuilder builder)
         {
             builder.RegisterTransient<IService, Service>()
