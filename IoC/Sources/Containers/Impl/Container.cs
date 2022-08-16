@@ -73,7 +73,10 @@ namespace Depra.IoC.Containers.Impl
                 {
                     if (@object is IAsyncDisposable asyncDisposable)
                     {
-                        asyncDisposable.DisposeAsync().GetAwaiter().GetResult();
+                        Task.Run(async () => await asyncDisposable.DisposeAsync().ConfigureAwait(false))
+                            .ConfigureAwait(false)
+                            .GetAwaiter()
+                            .GetResult();
                     }
                     else
                     {
@@ -115,9 +118,17 @@ namespace Depra.IoC.Containers.Impl
             FillDescriptors(descriptors);
         }
 
-        public void Dispose() => _rootScope.Dispose();
+        public void Dispose()
+        {
+            _rootScope.Dispose();
+            GC.SuppressFinalize(this);
+        }
 
-        public ValueTask DisposeAsync() => _rootScope.DisposeAsync();
+        public async ValueTask DisposeAsync()
+        {
+            await _rootScope.DisposeAsync().ConfigureAwait(false);
+            GC.SuppressFinalize(this);
+        }
 
         private ServiceDescriptor? FindDescriptor(Type service)
         {
