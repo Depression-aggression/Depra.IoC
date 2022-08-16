@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Depra.IoC.Tests
 {
     internal interface IServiceTest
     {
-        bool IsCreated { get; }
     }
 
     internal class Service : IServiceTest
@@ -14,11 +15,8 @@ namespace Depra.IoC.Tests
 
     internal class ServiceWithEmptyConstructor : IServiceTest
     {
-        public bool IsCreated { get; }
-
         public ServiceWithEmptyConstructor()
         {
-            IsCreated = true;
         }
     }
 
@@ -27,7 +25,7 @@ namespace Depra.IoC.Tests
         public class Token
         {
             private Guid _guid;
-            
+
             public Token()
             {
                 _guid = Guid.NewGuid();
@@ -35,14 +33,41 @@ namespace Depra.IoC.Tests
 
             public override string ToString() => _guid.ToString();
         }
-
-        private readonly Token _token;
-
-        public bool IsCreated => _token != null;
-
+        
         public ServiceWithConstructor(Token token)
         {
-            _token = token;
+            if (token == null)
+            {
+                throw new NullReferenceException();
+            }
+        }
+    }
+
+    internal class EmptyGeneric
+    {
+    }
+
+    internal class GenericService<T> : IServiceTest where T : EmptyGeneric
+    {
+        public GenericService(T value)
+        {
+            if (value == null)
+            {
+                throw new NullReferenceException();
+            }
+        }
+    }
+    
+    internal class EnumerableService : IServiceTest, IEnumerable<EmptyGeneric>
+    {
+        public IEnumerator<EmptyGeneric> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

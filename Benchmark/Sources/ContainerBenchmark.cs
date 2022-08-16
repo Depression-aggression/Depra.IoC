@@ -13,6 +13,7 @@ namespace Depra.IoC.Benchmark
 {
     [InProcess]
     [MemoryDiagnoser]
+    [StopOnFirstError]
     [Config(typeof(Config))]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     public class ContainerBenchmark
