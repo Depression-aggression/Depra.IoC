@@ -1,7 +1,7 @@
-﻿using Depra.IoC.Containers.Impl;
+﻿using Depra.IoC.Activation.Impl;
+using Depra.IoC.Containers.Builders.Abstract;
+using Depra.IoC.Containers.Impl;
 using Depra.IoC.Containers.Interfaces;
-using Depra.IoC.Scope.Activation.Impl;
-using Depra.IoC.Scope.Containers.Builders.Abstract;
 
 namespace Depra.IoC.Containers.Builders.Impl
 {

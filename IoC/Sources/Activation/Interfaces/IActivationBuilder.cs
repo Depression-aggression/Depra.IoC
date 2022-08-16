@@ -1,7 +1,8 @@
 ﻿using System;
 using Depra.IoC.Descriptors.Abstract;
+using Depra.IoC.Scope;
 
-namespace Depra.IoC.Scope.Activation.Interfaces
+namespace Depra.IoC.Activation.Interfaces
 {
     public interface IActivationBuilder
     {

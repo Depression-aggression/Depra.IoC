@@ -4,11 +4,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Depra.IoC.Activation.Interfaces;
 using Depra.IoC.Containers.Interfaces;
 using Depra.IoC.Descriptors.Abstract;
 using Depra.IoC.Descriptors.Impl;
 using Depra.IoC.Scope;
-using Depra.IoC.Scope.Activation.Interfaces;
 using Depra.IoC.Structs;
 
 namespace Depra.IoC.Containers.Impl
@@ -111,7 +111,7 @@ namespace Depra.IoC.Containers.Impl
             _rootScope = new Scope(this);
             _descriptors = new ConcurrentDictionary<Type, ServiceDescriptor>();
             _buildActivators = new ConcurrentDictionary<ServiceDescriptor, Func<IScope, object>>();
-            
+
             FillDescriptors(descriptors);
         }
 

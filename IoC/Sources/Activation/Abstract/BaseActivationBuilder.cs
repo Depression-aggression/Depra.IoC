@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Depra.IoC.Activation.Interfaces;
 using Depra.IoC.Descriptors.Abstract;
 using Depra.IoC.Descriptors.Impl;
 using Depra.IoC.Scope;
-using Depra.IoC.Scope.Activation.Interfaces;
 
 namespace Depra.IoC.Activation.Abstract
 {

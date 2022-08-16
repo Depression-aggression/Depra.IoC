@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Depra.IoC.Activation.Abstract;
+using Depra.IoC.Scope;
 
-namespace Depra.IoC.Scope.Activation.Impl
+namespace Depra.IoC.Activation.Impl
 {
     public class ReflectionBasedActivationBuilder : BaseActivationBuilder
     {

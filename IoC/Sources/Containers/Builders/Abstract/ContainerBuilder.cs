@@ -3,7 +3,7 @@ using Depra.IoC.Containers.Builders.Interfaces;
 using Depra.IoC.Containers.Interfaces;
 using Depra.IoC.Descriptors.Abstract;
 
-namespace Depra.IoC.Scope.Containers.Builders.Abstract
+namespace Depra.IoC.Containers.Builders.Abstract
 {
     public abstract class ContainerBuilder : IContainerBuilder
     {
