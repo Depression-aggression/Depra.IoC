@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Depra.IoC.Application</RootNamespace>
+        <Authors>Nikolay Melnikov</Authors>
+        <Company>Depra</Company>
+        <Product>IoC Container</Product>
+        <PackageId>Depra.IoC</PackageId>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>Simple IoC container implementation.</Description>
+        <RepositoryUrl>https://github.com/Depression-aggression/IoC-Container</RepositoryUrl>
+        <PackageTags>DI, IoC, inversion, control, dependency, inversion</PackageTags>
+        <AssemblyName>Depra.IoC.Application</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+    </ItemGroup>
+
+</Project>
