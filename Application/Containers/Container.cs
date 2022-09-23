@@ -9,7 +9,7 @@ using Depra.IoC.Domain.Container;
 using Depra.IoC.Domain.Description;
 using Depra.IoC.Domain.Enums;
 using Depra.IoC.Domain.Scope;
-#if NETCOREAPP3_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
 using System.Threading.Tasks;
 #endif
 
@@ -65,7 +65,7 @@ namespace Depra.IoC.Application.Containers
                     _disposables.Push(result);
                 }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
                 if (result is IAsyncDisposable)
                 {
                     _disposables.Push(result);
@@ -79,7 +79,7 @@ namespace Depra.IoC.Application.Containers
             {
                 foreach (var @object in _disposables)
                 {
-#if NETCOREAPP3_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
                     if (@object is IAsyncDisposable asyncDisposable)
                     {
                         Task.Run(async () => await asyncDisposable.DisposeAsync().ConfigureAwait(false))
@@ -95,7 +95,7 @@ namespace Depra.IoC.Application.Containers
                 }
             }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
             public async ValueTask DisposeAsync()
             {
                 foreach (var @object in _disposables)
@@ -136,7 +136,7 @@ namespace Depra.IoC.Application.Containers
             GC.SuppressFinalize(this);
         }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER
         public async ValueTask DisposeAsync()
         {
             await _rootScope.DisposeAsync().ConfigureAwait(false);
