@@ -13,7 +13,7 @@ namespace Depra.IoC.Benchmarks
         {
             BenchmarkRunner.Run(typeof(Program).Assembly, DefaultConfig.Instance
                 .AddValidator(JitOptimizationsValidator.FailOnError)
-                .AddJob(Job.ShortRun.WithToolchain(InProcessEmitToolchain.Instance))
+                .AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance))
                 .WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest)));
         }
     }

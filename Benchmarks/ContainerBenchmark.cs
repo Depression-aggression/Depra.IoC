@@ -8,14 +8,19 @@ using Depra.IoC.Infrastructure.Activation;
 
 namespace Depra.IoC.Benchmarks
 {
-    [InProcess]
+    [MemoryDiagnoser]
     public class ContainerBenchmark
     {
         public interface IService { }
 
         private class Service : IService { }
 
-        public class Controller
+        public interface IController
+        {
+            
+        }
+        
+        public class Controller : IController
         {
             private readonly IService _service;
 
@@ -29,13 +34,19 @@ namespace Depra.IoC.Benchmarks
         private IScope _reflectionBased;
 
         [Benchmark(Baseline = true)]
-        public Controller Create() => new Controller(new Service());
+        public IController CreateUsingConstructor() => new Controller(new Service());
 
         [Benchmark]
-        public Controller Lambda() => _lambdaBased.Resolve<Controller>();
+        public IController ResolveByTypeUsingLambdas() => _lambdaBased.Resolve<Controller>();
 
         [Benchmark]
-        public Controller Reflection() => _reflectionBased.Resolve<Controller>();
+        public IController ResolveByTypeUsingReflection() => _reflectionBased.Resolve<Controller>();
+
+        [Benchmark]
+        public IController ResolveByInterfaceUsingLambdas() => _lambdaBased.Resolve<Controller>();
+
+        [Benchmark]
+        public IController ResolveByInterfaceUsingReflection() => _reflectionBased.Resolve<Controller>();
 
         [GlobalSetup]
         public void GlobalSetup()

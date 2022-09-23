@@ -4,10 +4,28 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <AssemblyName>Depra.IoC.Infrastructure</AssemblyName>
         <RootNamespace>Depra.IoC.Infrastructure</RootNamespace>
+        <Version>0.9.0</Version>
+        <Authors>Nikolay Melnikov</Authors>
+        <Company>Depra</Company>
+        <Description>Infrastructure layer of IoC Container</Description>
+        <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <RepositoryUrl>https://github.com/Depression-aggression/IoC-Container</RepositoryUrl>
+        <RepositoryType>Module</RepositoryType>
+        <PackageTags>DI, IoC, container, inversion, control, dependency, inversion, infrastructure</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\..\Depra.Serialization\LICENSE.md">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>
