@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Depra.IoC.Application.Activation.Interfaces;
 using Depra.IoC.Application.Descriptors;
 using Depra.IoC.Domain.Description;
 using Depra.IoC.Domain.Scope;
 
-namespace Depra.IoC.Application.Activation.Abstract
+namespace Depra.IoC.Application.Activation
 {
     public abstract class BaseActivationBuilder : IActivationBuilder
     {
@@ -30,5 +29,7 @@ namespace Depra.IoC.Application.Activation.Abstract
 
         private static ConstructorInfo SelectConstructor(Type implementation) =>
             implementation.GetConstructors(FLAGS).Single();
+
+        public override string ToString() => GetType().Name;
     }
 }

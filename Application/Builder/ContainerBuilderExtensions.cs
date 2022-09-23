@@ -1,10 +1,10 @@
 ﻿using System;
-using Depra.IoC.Application.Containers.Builders.Interfaces;
 using Depra.IoC.Application.Descriptors;
+using Depra.IoC.Domain.Builder;
 using Depra.IoC.Domain.Enums;
 using Depra.IoC.Domain.Scope;
 
-namespace Depra.IoC.Application.Containers.Builders.Extensions
+namespace Depra.IoC.Application.Builder
 {
     public static class ContainerBuilderExtensions
     {
@@ -56,7 +56,7 @@ namespace Depra.IoC.Application.Containers.Builders.Extensions
             where TImplementation : TService
             => builder.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.Singleton);
 
-        internal static IContainerBuilder RegisterType(this IContainerBuilder builder, Type service, Type implementation,
+        public static IContainerBuilder RegisterType(this IContainerBuilder builder, Type service, Type implementation,
             LifetimeType lifetime)
         {
             builder.Register(new TypeBasedServiceDescriptor(implementation, service, lifetime));

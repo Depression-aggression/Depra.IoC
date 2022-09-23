@@ -1,6 +1,6 @@
 using Depra.IoC.Domain.Scope;
 
-namespace Depra.IoC.Scope
+namespace Depra.IoC.Domain.Extensions
 {
     public static class ScopeExtensions
     {

@@ -1,28 +1,19 @@
 ﻿using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Columns;
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Loggers;
-using BenchmarkDotNet.Order;
-using BenchmarkDotNet.Validators;
-using Depra.IoC.Application.Containers.Builders.Extensions;
-using Depra.IoC.Application.Containers.Builders.Interfaces;
-using Depra.IoC.Containers.Builders.Impl;
+using Depra.IoC.Application.Activation;
+using Depra.IoC.Application.Builder;
 using Depra.IoC.Domain.Container;
+using Depra.IoC.Domain.Extensions;
 using Depra.IoC.Domain.Scope;
-using Depra.IoC.Scope;
+using Depra.IoC.Infrastructure.Activation;
 
 namespace Depra.IoC.Benchmarks
 {
     [InProcess]
     public class ContainerBenchmark
     {
-        public interface IService
-        {
-        }
+        public interface IService { }
 
-        private class Service : IService
-        {
-        }
+        private class Service : IService { }
 
         public class Controller
         {
@@ -49,8 +40,8 @@ namespace Depra.IoC.Benchmarks
         [GlobalSetup]
         public void GlobalSetup()
         {
-            var lambdaBasedContainer = BuildContainer(new LambdaBasedContainerBuilder());
-            var reflectionBasedContainer = BuildContainer(new ReflectionBasedContainerBuilder());
+            var lambdaBasedContainer = BuildContainer(new LambdaBasedActivationBuilder());
+            var reflectionBasedContainer = BuildContainer(new ReflectionBasedActivationBuilder());
 
             _lambdaBased = lambdaBasedContainer.CreateScope();
             _reflectionBased = reflectionBasedContainer.CreateScope();
@@ -62,10 +53,11 @@ namespace Depra.IoC.Benchmarks
             _lambdaBased.Dispose();
             _reflectionBased.Dispose();
         }
-        
-        private static IContainer BuildContainer(IContainerBuilder builder)
+
+        private static IContainer BuildContainer(IActivationBuilder activationBuilder)
         {
-            builder.RegisterTransient<IService, Service>()
+            var builder = new ContainerBuilder(activationBuilder)
+                .RegisterTransient<IService, Service>()
                 .RegisterTransient<Controller>();
 
             return builder.Build();

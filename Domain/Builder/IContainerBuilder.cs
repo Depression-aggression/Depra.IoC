@@ -1,12 +1,12 @@
 ﻿using Depra.IoC.Domain.Container;
 using Depra.IoC.Domain.Description;
 
-namespace Depra.IoC.Application.Containers.Builders.Interfaces
+namespace Depra.IoC.Domain.Builder
 {
     public interface IContainerBuilder
     {
-        void Register(ServiceDescriptor descriptor);
-        
         IContainer Build();
+        
+        void Register(ServiceDescriptor descriptor);
     }
 }
