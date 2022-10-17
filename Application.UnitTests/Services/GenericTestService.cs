@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Depra.IoC.Application.UnitTests.Services
+namespace Depra.IoC.Application.UnitTests.Services;
+
+internal class GenericTestService<T> : ITestService where T : EmptyGeneric
 {
-    internal class GenericTestService<T> : ITestService where T : EmptyGeneric
+    public GenericTestService(T value)
     {
-        public GenericTestService(T value)
+        if (value == null)
         {
-            if (value == null)
-            {
-                throw new NullReferenceException();
-            }
+            throw new NullReferenceException();
         }
     }
 }

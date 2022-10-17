@@ -5,153 +5,156 @@ using Depra.IoC.Application.Builder;
 using Depra.IoC.Application.UnitTests.Services;
 using Depra.IoC.Domain.Enums;
 using Depra.IoC.Domain.Extensions;
-using Depra.IoC.Infrastructure.Activation;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Depra.IoC.Application.UnitTests
+namespace Depra.IoC.Application.UnitTests;
+
+[TestFixture]
+public class ContainerTests
 {
-    [TestFixture]
-    public class ContainerTests
+    private static IEnumerable<LifetimeType> GetLifetime()
     {
-        private static IEnumerable<IActivationBuilder> GetActivationBuilders()
-        {
-            yield return new LambdaBasedActivationBuilder();
-            yield return new ReflectionBasedActivationBuilder();
-        }
+        yield return LifetimeType.Scoped;
+        yield return LifetimeType.Transient;
+        yield return LifetimeType.Singleton;
+    }
 
-        [Test]
-        public void WhenRegisterByImplType_AndResolveByImplType_ThenCanResolve(
-            [Values(LifetimeType.Scoped, LifetimeType.Transient, LifetimeType.Singleton)]
-            LifetimeType lifetime,
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            var implType = typeof(TestService);
-            using var container = new ContainerBuilder(activationBuilder)
-                .RegisterType(implType, implType, lifetime)
-                .Build();
-            var scope = container.CreateScope();
+    private static IEnumerable<IActivationBuilder> GetActivationBuilders()
+    {
+        yield return new LambdaBasedActivationBuilder();
+        yield return new ReflectionBasedActivationBuilder();
+    }
 
-            // Act.
-            var service = scope.Resolve<TestService>();
+    [Test]
+    public void WhenRegisteringByImplType_AndResolvingByImplType_ThenResolvedTypeEqualsToRegisteredType(
+        [ValueSource(nameof(GetLifetime))] LifetimeType lifetime,
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        var implementationType = typeof(TestService);
+        using var container = new ContainerBuilder(activationBuilder)
+            .RegisterType(implementationType, implementationType, lifetime)
+            .Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            service.Should().BeOfType<TestService>();
-        }
+        // Act.
+        var service = scope.Resolve<TestService>();
 
-        [Test]
-        public void WhenRegisteredByInterface_AndResolveByInterface_ThenCanResolve(
-            [Values(LifetimeType.Scoped, LifetimeType.Transient, LifetimeType.Singleton)]
-            LifetimeType lifetime,
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            var interfaceType = typeof(ITestService);
-            var implType = typeof(TestService);
-            using var container = new ContainerBuilder(activationBuilder)
-                .RegisterType(interfaceType, implType, lifetime)
-                .Build();
-            var scope = container.CreateScope();
+        // Assert.
+        service.Should().BeOfType(implementationType);
+    }
 
-            // Act.
-            var service = scope.Resolve<ITestService>();
+    [Test]
+    public void WhenRegisteringByInterface_AndResolvingByInterface_ThenResolvedTypeEqualsToRegisteredType(
+        [ValueSource(nameof(GetLifetime))] LifetimeType lifetime,
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        var interfaceType = typeof(ITestService);
+        var implementationType = typeof(TestService);
+        using var container = new ContainerBuilder(activationBuilder)
+            .RegisterType(interfaceType, implementationType, lifetime)
+            .Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            service.Should().BeOfType<TestService>();
-        }
+        // Act.
+        var service = scope.Resolve<ITestService>();
 
-        [Test]
-        public void WhenResolveByType_AndTypeNotRegisteredInContainer_ThenThrowInvalidOperationException(
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            using var container = new ContainerBuilder(activationBuilder).Build();
-            var scope = container.CreateScope();
+        // Assert.
+        service.Should().BeOfType(implementationType);
+    }
 
-            // Act.
-            void ResolveService() => scope.Resolve<TestService>();
+    [Test]
+    public void WhenResolvingByType_AndTypeNotRegisteredInContainer_ThenInvalidOperationExceptionIsThrown(
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        using var container = new ContainerBuilder(activationBuilder).Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            Assert.That(ResolveService, Throws.TypeOf<InvalidOperationException>());
-        }
+        // Act.
+        Action act = () => scope.Resolve<TestService>();
 
-        [Test]
-        public void WhenResolveType_AndTypeConstructorIsEmpty_ThenResolvedServiceNotNull(
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            using var container = new ContainerBuilder(activationBuilder)
-                .RegisterTransient<ITestService, TestServiceWithEmptyConstructor>()
-                .Build();
-            var scope = container.CreateScope();
+        // Assert.
+        act.Should().Throw<InvalidOperationException>();
+    }
 
-            // Act.
-            var service = scope.Resolve<ITestService>();
+    [Test]
+    public void WhenResolvingType_AndTypeConstructorIsEmpty_ThenResolvedTypeEqualsToRegisteredType(
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        using var container = new ContainerBuilder(activationBuilder)
+            .RegisterTransient<ITestService, TestServiceWithEmptyConstructor>()
+            .Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            service.Should().NotBeNull();
-        }
+        // Act.
+        var service = scope.Resolve<ITestService>();
 
-        [Test]
-        public void WhenResolveType_AndTypeConstructorIsNotEmpty_ThenResolvedServiceNotNull(
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            using var container = new ContainerBuilder(activationBuilder)
-                .RegisterSingleton<TestServiceWithConstructor.Token>()
-                .RegisterTransient<ITestService, TestServiceWithConstructor>()
-                .Build();
-            var scope = container.CreateScope();
+        // Assert.
+        service.Should().BeOfType<TestServiceWithEmptyConstructor>();
+    }
 
-            // Act.
-            var service = scope.Resolve<ITestService>();
+    [Test]
+    public void WhenResolvingType_AndTypeConstructorIsNotEmpty_ThenResolvedTypeEqualsToRegisteredType(
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        using var container = new ContainerBuilder(activationBuilder)
+            .RegisterSingleton<TestServiceWithConstructor.Token>()
+            .RegisterTransient<ITestService, TestServiceWithConstructor>()
+            .Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            service.Should().NotBeNull();
-        }
+        // Act.
+        var service = scope.Resolve<ITestService>();
 
-        [Test]
-        public void WhenResolveType_AndTypeIsGeneric_ThenResolvedServiceNotNull(
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            using var container = new ContainerBuilder(activationBuilder)
-                .RegisterTransient<EmptyGeneric>()
-                .RegisterTransient<GenericTestService<EmptyGeneric>>()
-                .Build();
-            var scope = container.CreateScope();
+        // Assert.
+        service.Should().BeOfType<TestServiceWithConstructor>();
+    }
 
-            // Act.
-            var service = scope.Resolve<GenericTestService<EmptyGeneric>>();
+    [Test]
+    public void WhenResolvingType_AndTypeIsGeneric_ThenResolvedTypeEqualsToRegisteredType(
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        using var container = new ContainerBuilder(activationBuilder)
+            .RegisterTransient<EmptyGeneric>()
+            .RegisterTransient<GenericTestService<EmptyGeneric>>()
+            .Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            service.Should().NotBeNull();
-        }
+        // Act.
+        var service = scope.Resolve<GenericTestService<EmptyGeneric>>();
 
-        [Test]
-        public void WhenResolveType_AndTypeIsEnumerable_ThenResolvedServiceNotNull(
-            [ValueSource(nameof(GetActivationBuilders))]
-            IActivationBuilder activationBuilder)
-        {
-            // Arrange.
-            using var container = new ContainerBuilder(activationBuilder)
-                .RegisterTransient<EmptyGeneric>()
-                .RegisterTransient<EnumerableTestService>()
-                .Build();
-            var scope = container.CreateScope();
+        // Assert.
+        service.Should().BeOfType<GenericTestService<EmptyGeneric>>();
+    }
 
-            // Act.
-            var service = scope.Resolve<EnumerableTestService>();
+    [Test]
+    public void WhenResolvingType_AndTypeIsEnumerable_ThenResolvedTypeEqualsToRegisteredType(
+        [ValueSource(nameof(GetActivationBuilders))]
+        IActivationBuilder activationBuilder)
+    {
+        // Arrange.
+        using var container = new ContainerBuilder(activationBuilder)
+            .RegisterTransient<EmptyGeneric>()
+            .RegisterTransient<EnumerableTestService>()
+            .Build();
+        var scope = container.CreateScope();
 
-            // Assert.
-            service.Should().NotBeNull();
-        }
+        // Act.
+        var service = scope.Resolve<EnumerableTestService>();
+
+        // Assert.
+        service.Should().BeOfType<EnumerableTestService>();
     }
 }

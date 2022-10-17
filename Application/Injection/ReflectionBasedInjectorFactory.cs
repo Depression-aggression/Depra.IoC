@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using Depra.IoC.Domain.Injection;
-using Depra.IoC.Injection.Delegates;
+using Depra.IoC.Domain.Injection.Delegates;
+using Depra.IoC.Domain.Injection.Factory;
 
 namespace Depra.IoC.Application.Injection
 {

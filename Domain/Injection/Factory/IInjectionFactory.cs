@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Depra.IoC.Injection.Delegates;
+using Depra.IoC.Domain.Injection.Delegates;
 
-namespace Depra.IoC.Domain.Injection
+namespace Depra.IoC.Domain.Injection.Factory
 {
     public interface IInjectionFactory
     {

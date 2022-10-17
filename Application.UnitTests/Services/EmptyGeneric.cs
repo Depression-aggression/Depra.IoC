@@ -1,6 +1,3 @@
-﻿namespace Depra.IoC.Application.UnitTests.Services
-{
-    internal class EmptyGeneric
-    {
-    }
-}
+﻿namespace Depra.IoC.Application.UnitTests.Services;
+
+internal class EmptyGeneric { }

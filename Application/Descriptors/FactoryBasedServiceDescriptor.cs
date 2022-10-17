@@ -9,8 +9,8 @@ namespace Depra.IoC.Application.Descriptors
     {
         public Func<IScope, object> Factory { get; }
 
-        public FactoryBasedServiceDescriptor(Type serviceType, LifetimeType lifetime, Func<IScope, object> factory) 
-            : base(serviceType, lifetime)
+        public FactoryBasedServiceDescriptor(Type serviceType, LifetimeType lifetime, Func<IScope, object> factory) :
+            base(serviceType, lifetime)
         {
             Factory = factory;
         }

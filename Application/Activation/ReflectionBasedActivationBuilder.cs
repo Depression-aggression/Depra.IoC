@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Depra.IoC.Application.Activation;
 using Depra.IoC.Domain.Scope;
 
-namespace Depra.IoC.Infrastructure.Activation
+namespace Depra.IoC.Application.Activation
 {
     public class ReflectionBasedActivationBuilder : BaseActivationBuilder
     {
@@ -14,6 +13,7 @@ namespace Depra.IoC.Infrastructure.Activation
             {
                 var argsForConstructor = GetConstructorArguments(scope, args);
                 var instance = constructor.Invoke(argsForConstructor);
+
                 return instance;
             };
         }
@@ -24,7 +24,7 @@ namespace Depra.IoC.Infrastructure.Activation
             {
                 return Array.Empty<object>();
             }
-            
+
             var arguments = new object[parameters.Count];
             for (var i = 0; i < parameters.Count; i++)
             {

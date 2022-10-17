@@ -2,10 +2,9 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Depra.IoC.Application.Activation;
 using Depra.IoC.Domain.Scope;
 
-namespace Depra.IoC.Infrastructure.Activation
+namespace Depra.IoC.Application.Activation
 {
     public class LambdaBasedActivationBuilder : BaseActivationBuilder
     {

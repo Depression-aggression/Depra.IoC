@@ -1,9 +1,6 @@
-﻿namespace Depra.IoC.Application.UnitTests.Services
+﻿namespace Depra.IoC.Application.UnitTests.Services;
+
+internal class TestServiceWithEmptyConstructor : ITestService
 {
-    internal class TestServiceWithEmptyConstructor : ITestService
-    {
-        public TestServiceWithEmptyConstructor()
-        {
-        }
-    }
+    public TestServiceWithEmptyConstructor() { }
 }

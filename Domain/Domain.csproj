@@ -9,7 +9,7 @@
         <Company>Depra</Company>
         <Description>Domain layer of IoC Container</Description>
         <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
-        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <RepositoryType>Module</RepositoryType>
         <RepositoryUrl>https://github.com/Depression-aggression/IoC-Container</RepositoryUrl>
         <PackageTags>DI, IoC, container, inversion, control, dependency, inversion, domain</PackageTags>
@@ -18,9 +18,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Include="..\..\Depra.Serialization\LICENSE.md">
+      <None Include="..\LICENSE">
         <Pack>True</Pack>
-        <PackagePath></PackagePath>
+        <PackagePath>\</PackagePath>
       </None>
     </ItemGroup>
 

@@ -1,7 +1,3 @@
-﻿namespace Depra.IoC.Application.UnitTests.Services
-{
-    internal class TestService : ITestService
-    {
-        public bool IsCreated => true;
-    }
-}
+﻿namespace Depra.IoC.Application.UnitTests.Services;
+
+internal class TestService : ITestService { }
