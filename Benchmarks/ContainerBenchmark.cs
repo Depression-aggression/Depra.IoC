@@ -1,60 +1,29 @@
-﻿using BenchmarkDotNet.Attributes;
-using Depra.IoC.Application.Activation;
-using Depra.IoC.Application.Builder;
-using Depra.IoC.Domain.Container;
-using Depra.IoC.Domain.Extensions;
-using Depra.IoC.Domain.Scope;
+﻿using Depra.IoC.Activation;
+using Depra.IoC.Builder;
+using Depra.IoC.Container;
+using Depra.IoC.Extensions;
+using Depra.IoC.Scope;
 
 namespace Depra.IoC.Benchmarks;
 
-[MemoryDiagnoser]
 public class ContainerBenchmark
 {
-    public interface IService { }
-
-    private class Service : IService { }
-
-    public interface IController
-    {
-            
-    }
-        
-    public class Controller : IController
-    {
-        private readonly IService _service;
-
-        public Controller(IService service)
-        {
-            _service = service;
-        }
-    }
-
     private IScope _lambdaBased;
     private IScope _reflectionBased;
-
-    [Benchmark(Baseline = true)]
-    public IController CreateUsingConstructor() => new Controller(new Service());
-
-    [Benchmark]
-    public IController ResolveByTypeUsingLambdas() => _lambdaBased.Resolve<Controller>();
-
-    [Benchmark]
-    public IController ResolveByTypeUsingReflection() => _reflectionBased.Resolve<Controller>();
-
-    [Benchmark]
-    public IController ResolveByInterfaceUsingLambdas() => _lambdaBased.Resolve<Controller>();
-
-    [Benchmark]
-    public IController ResolveByInterfaceUsingReflection() => _reflectionBased.Resolve<Controller>();
 
     [GlobalSetup]
     public void GlobalSetup()
     {
-        var lambdaBasedContainer = BuildContainer(new LambdaBasedActivationBuilder());
-        var reflectionBasedContainer = BuildContainer(new ReflectionBasedActivationBuilder());
+        _lambdaBased = BuildContainer(new LambdaBasedActivationBuilder())
+            .CreateScope();
+        _reflectionBased = BuildContainer(new ReflectionBasedActivationBuilder())
+            .CreateScope();
 
-        _lambdaBased = lambdaBasedContainer.CreateScope();
-        _reflectionBased = reflectionBasedContainer.CreateScope();
+        IContainer BuildContainer(IActivationBuilder activationBuilder) =>
+            new ContainerBuilder(activationBuilder)
+                .RegisterTransient<IService, Service>()
+                .RegisterTransient<Controller>()
+                .Build();
     }
 
     [GlobalCleanup]
@@ -64,12 +33,36 @@ public class ContainerBenchmark
         _reflectionBased.Dispose();
     }
 
-    private static IContainer BuildContainer(IActivationBuilder activationBuilder)
-    {
-        var builder = new ContainerBuilder(activationBuilder)
-            .RegisterTransient<IService, Service>()
-            .RegisterTransient<Controller>();
+    [Benchmark(Baseline = true)]
+    public IController CreateUsingConstructor() => 
+        new Controller(new Service());
 
-        return builder.Build();
+    [Benchmark]
+    public IController ResolveByTypeUsingLambdas() => 
+        _lambdaBased.Resolve<Controller>();
+
+    [Benchmark]
+    public IController ResolveByTypeUsingReflection() => 
+        _reflectionBased.Resolve<Controller>();
+
+    [Benchmark]
+    public IController ResolveByInterfaceUsingLambdas() => 
+        _lambdaBased.Resolve<Controller>();
+
+    [Benchmark]
+    public IController ResolveByInterfaceUsingReflection() => 
+        _reflectionBased.Resolve<Controller>();
+
+    private interface IService { }
+
+    public interface IController { }
+
+    private class Service : IService { }
+
+    private class Controller : IController
+    {
+        private readonly IService _service;
+
+        public Controller(IService service) => _service = service;
     }
 }

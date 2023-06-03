@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using Depra.IoC.Domain.Description;
+using Depra.IoC.Description;
 
 namespace Develop.Resolvers
 {

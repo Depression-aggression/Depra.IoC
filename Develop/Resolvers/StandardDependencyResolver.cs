@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using Depra.IoC.Domain.Description;
+using Depra.IoC.Description;
 
 namespace Develop.Resolvers
 {
-    public class StandardDependencyResolver : IDependencyResolver
+    public sealed class StandardDependencyResolver : IDependencyResolver
     {
         private readonly ISubDependencyResolver[] _subResolvers;
+
+        public StandardDependencyResolver(ISubDependencyResolver[] subResolvers) => 
+            _subResolvers = subResolvers;
 
         public ServiceDescriptor Resolve(ConcurrentDictionary<Type, ServiceDescriptor> descriptors, Type service)
         {
@@ -25,11 +28,6 @@ namespace Develop.Resolvers
             }
 
             throw new InvalidOperationException();
-        }
-        
-        public StandardDependencyResolver(ISubDependencyResolver[] subResolvers)
-        {
-            _subResolvers = subResolvers;
         }
     }
 }
