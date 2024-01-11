@@ -1,28 +1,29 @@
-﻿using System;
+﻿// SPDX-License-Identifier: Apache-2.0
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
+
 using System.Collections.Generic;
 using Depra.IoC.Activation;
-using Depra.IoC.Container;
 using Depra.IoC.Description;
+using Depra.IoC.Exceptions;
 
 namespace Depra.IoC.Builder
 {
-    public sealed class ContainerBuilder : IContainerBuilder
-    {
-        private readonly List<ServiceDescriptor> _descriptors;
-        private readonly IActivationBuilder _activationBuilder;
+	public sealed class ContainerBuilder : IContainerBuilder
+	{
+		private readonly List<ServiceDescriptor> _descriptors;
+		private readonly IActivationBuilder _activationBuilder;
 
-        public ContainerBuilder(IActivationBuilder activationBuilder)
-        {
-            _activationBuilder = activationBuilder ?? throw new ArgumentNullException(nameof(activationBuilder));
-            _descriptors = new List<ServiceDescriptor>();
-        }
+		public ContainerBuilder(IActivationBuilder activationBuilder)
+		{
+			Guard.AgainstNull(activationBuilder, nameof(activationBuilder));
+			_activationBuilder = activationBuilder;
+			_descriptors = new List<ServiceDescriptor>();
+		}
 
-        public IContainer Build() => 
-            new Container.Container(_descriptors, _activationBuilder);
+		public IContainer Build() => new Container(_descriptors, _activationBuilder);
 
-        public void Register(ServiceDescriptor descriptor) =>
-            _descriptors.Add(descriptor);
+		public void Register(ServiceDescriptor descriptor) => _descriptors.Add(descriptor);
 
-        public override string ToString() => GetType().Name;
-    }
+		public override string ToString() => GetType().Name;
+	}
 }

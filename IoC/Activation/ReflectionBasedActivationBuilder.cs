@@ -1,39 +1,40 @@
-﻿using System;
+﻿// SPDX-License-Identifier: Apache-2.0
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Depra.IoC.Scope;
 
 namespace Depra.IoC.Activation
 {
-    public sealed class ReflectionBasedActivationBuilder : BaseActivationBuilder
-    {
-        private static object[] GetConstructorArguments(IScope scope, IReadOnlyList<ParameterInfo> parameters)
-        {
-            if (parameters.Count == 0)
-            {
-                return Array.Empty<object>();
-            }
+	public sealed class ReflectionBasedActivationBuilder : BaseActivationBuilder
+	{
+		private static object[] GetConstructorArguments(IScope scope, IReadOnlyList<ParameterInfo> parameters)
+		{
+			if (parameters.Count == 0)
+			{
+				return Array.Empty<object>();
+			}
 
-            var arguments = new object[parameters.Count];
-            for (var index = 0; index < parameters.Count; index++)
-            {
-                var argument = parameters[index];
-                var argumentType = argument.ParameterType;
-                arguments[index] = scope.Resolve(argumentType);
-            }
+			var arguments = new object[parameters.Count];
+			for (var index = 0; index < parameters.Count; index++)
+			{
+				var argument = parameters[index];
+				var argumentType = argument.ParameterType;
+				arguments[index] = scope.Resolve(argumentType);
+			}
 
-            return arguments;
-        }
+			return arguments;
+		}
 
-        protected override Func<IScope, object> BuildActivationInternal(
-            ConstructorInfo constructor,
-            ParameterInfo[] args) =>
-            scope =>
-            {
-                var argsForConstructor = GetConstructorArguments(scope, args);
-                var instance = constructor.Invoke(argsForConstructor);
+		protected override Func<IScope, object> BuildActivation(ConstructorInfo constructor, ParameterInfo[] args) =>
+			scope =>
+			{
+				var argsForConstructor = GetConstructorArguments(scope, args);
+				var instance = constructor.Invoke(argsForConstructor);
 
-                return instance;
-            };
-    }
+				return instance;
+			};
+	}
 }

@@ -1,12 +1,10 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
-namespace Depra.IoC.Enums
+namespace Depra.IoC.Composition
 {
-	public enum LifetimeType
+	public interface IInstaller
 	{
-		TRANSIENT,
-		SCOPED,
-		SINGLETON
+		void InstallBindings();
 	}
 }

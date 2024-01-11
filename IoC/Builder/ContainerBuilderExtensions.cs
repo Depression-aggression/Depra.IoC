@@ -1,78 +1,95 @@
-﻿using System;
+﻿// SPDX-License-Identifier: Apache-2.0
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
+
+using System;
+using System.Runtime.CompilerServices;
 using Depra.IoC.Description;
 using Depra.IoC.Enums;
 using Depra.IoC.Scope;
 
 namespace Depra.IoC.Builder
 {
-    public static class ContainerBuilderExtensions
-    {
-        public static IContainerBuilder RegisterTransient(this IContainerBuilder builder, Type service,
-            Type implementation)
-            => builder.RegisterType(service, implementation, LifetimeType.Transient);
+	public static class ContainerBuilderExtensions
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterTransient(this IContainerBuilder self, Type service, Type implementation)
+			=> self.RegisterType(service, implementation, LifetimeType.TRANSIENT);
 
-        public static IContainerBuilder RegisterScoped(this IContainerBuilder builder, Type service,
-            Type implementation)
-            => builder.RegisterType(service, implementation, LifetimeType.Scoped);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterScoped(this IContainerBuilder self, Type service, Type implementation)
+			=> self.RegisterType(service, implementation, LifetimeType.SCOPED);
 
-        public static IContainerBuilder RegisterSingleton(this IContainerBuilder builder, Type service,
-            Type implementation)
-            => builder.RegisterType(service, implementation, LifetimeType.Singleton);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton(this IContainerBuilder self, Type service, Type implementation)
+			=> self.RegisterType(service, implementation, LifetimeType.SINGLETON);
 
-        public static IContainerBuilder RegisterTransient(this IContainerBuilder builder, Type service,
-            Func<IScope, object> factory)
-            => builder.RegisterFactory(service, factory, LifetimeType.Transient);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterTransient(this IContainerBuilder self, Type service,
+			Func<IScope, object> factory)
+			=> self.RegisterFactory(service, factory, LifetimeType.TRANSIENT);
 
-        public static IContainerBuilder RegisterScoped(this IContainerBuilder builder, Type service,
-            Func<IScope, object> factory)
-            => builder.RegisterFactory(service, factory, LifetimeType.Scoped);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterScoped(this IContainerBuilder self, Type service,
+			Func<IScope, object> factory)
+			=> self.RegisterFactory(service, factory, LifetimeType.SCOPED);
 
-        public static IContainerBuilder RegisterSingleton(this IContainerBuilder builder, Type service,
-            Func<IScope, object> factory)
-            => builder.RegisterFactory(service, factory, LifetimeType.Singleton);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton(this IContainerBuilder self, Type service,
+			Func<IScope, object> factory)
+			=> self.RegisterFactory(service, factory, LifetimeType.SINGLETON);
 
-        public static IContainerBuilder RegisterSingleton(this IContainerBuilder builder, Type service, object instance)
-            => builder.RegisterInstance(service, instance);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton(this IContainerBuilder self, Type service, object instance)
+			=> self.RegisterInstance(service, instance);
 
-        public static IContainerBuilder RegisterTransient<TImplementation>(this IContainerBuilder builder)
-            => builder.RegisterType(typeof(TImplementation), typeof(TImplementation), LifetimeType.Transient);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterTransient<TImplementation>(this IContainerBuilder self)
+			=> self.RegisterType(typeof(TImplementation), typeof(TImplementation), LifetimeType.TRANSIENT);
 
-        public static IContainerBuilder RegisterScoped<TImplementation>(this IContainerBuilder builder)
-            => builder.RegisterType(typeof(TImplementation), typeof(TImplementation), LifetimeType.Scoped);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterScoped<TImplementation>(this IContainerBuilder self)
+			=> self.RegisterType(typeof(TImplementation), typeof(TImplementation), LifetimeType.SCOPED);
 
-        public static IContainerBuilder RegisterSingleton<TImplementation>(this IContainerBuilder builder) =>
-            builder.RegisterType(typeof(TImplementation), typeof(TImplementation), LifetimeType.Singleton);
-        
-        public static IContainerBuilder RegisterTransient<TService, TImplementation>(this IContainerBuilder builder)
-            where TImplementation : TService
-            => builder.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.Transient);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton<TImplementation>(this IContainerBuilder self) =>
+			self.RegisterType(typeof(TImplementation), typeof(TImplementation), LifetimeType.SINGLETON);
 
-        public static IContainerBuilder RegisterScoped<TService, TImplementation>(this IContainerBuilder builder)
-            where TImplementation : TService
-            => builder.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.Scoped);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterTransient<TService, TImplementation>(this IContainerBuilder self)
+			where TImplementation : TService
+			=> self.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.TRANSIENT);
 
-        public static IContainerBuilder RegisterSingleton<TService, TImplementation>(this IContainerBuilder builder)
-            where TImplementation : TService
-            => builder.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.Singleton);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterScoped<TService, TImplementation>(this IContainerBuilder self)
+			where TImplementation : TService
+			=> self.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.SCOPED);
 
-        public static IContainerBuilder RegisterType(this IContainerBuilder builder, Type service, Type implementation,
-            LifetimeType lifetime)
-        {
-            builder.Register(new TypeBasedServiceDescriptor(implementation, service, lifetime));
-            return builder;
-        }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton<TService, TImplementation>(this IContainerBuilder self)
+			where TImplementation : TService
+			=> self.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.SINGLETON);
 
-        private static IContainerBuilder RegisterFactory(this IContainerBuilder builder, Type service,
-            Func<IScope, object> factory, LifetimeType lifetime)
-        {
-            builder.Register(new FactoryBasedServiceDescriptor(service, lifetime, factory));
-            return builder;
-        }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterType(this IContainerBuilder self, Type service, Type implementation,
+			LifetimeType lifetime)
+		{
+			self.Register(new TypeBasedServiceDescriptor(implementation, service, lifetime));
+			return self;
+		}
 
-        private static IContainerBuilder RegisterInstance(this IContainerBuilder builder, Type service, object instance)
-        {
-            builder.Register(new InstanceBasedServiceDescriptor(service, instance));
-            return builder;
-        }
-    }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static IContainerBuilder RegisterFactory(this IContainerBuilder self, Type service,
+			Func<IScope, object> factory, LifetimeType lifetime)
+		{
+			self.Register(new FactoryBasedServiceDescriptor(service, lifetime, factory));
+			return self;
+		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static IContainerBuilder RegisterInstance(this IContainerBuilder self, Type service, object instance)
+		{
+			self.Register(new InstanceBasedServiceDescriptor(service, instance));
+			return self;
+		}
+	}
 }

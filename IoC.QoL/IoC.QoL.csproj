@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Depra.IoC.QoL</RootNamespace>
+        <AssemblyName>Depra.IoC.QoL</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

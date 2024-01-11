@@ -5,6 +5,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <AssemblyName>Depra.IoC.Benchmarks</AssemblyName>
         <RootNamespace>Depra.IoC.Benchmarks</RootNamespace>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

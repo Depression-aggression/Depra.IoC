@@ -12,6 +12,8 @@
         <AssemblyName>Depra.IoC.UnitTests</AssemblyName>
 
         <Nullable>disable</Nullable>
+
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
