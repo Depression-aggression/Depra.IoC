@@ -16,6 +16,7 @@ namespace Depra.IoC.Builder
 		public ContainerBuilder(IActivationBuilder activationBuilder)
 		{
 			Guard.AgainstNull(activationBuilder, nameof(activationBuilder));
+
 			_activationBuilder = activationBuilder;
 			_descriptors = new List<ServiceDescriptor>();
 		}

@@ -145,9 +145,9 @@ namespace Depra.IoC
 
 			public void Dispose()
 			{
-				foreach (var @object in _disposables)
+				foreach (var disposable in _disposables)
 				{
-					if (@object is IAsyncDisposable asyncDisposable)
+					if (disposable is IAsyncDisposable asyncDisposable)
 					{
 						Task.Run(async () => await asyncDisposable.DisposeAsync().ConfigureAwait(false))
 							.ConfigureAwait(false)
@@ -156,22 +156,22 @@ namespace Depra.IoC
 					}
 					else
 					{
-						((IDisposable) @object).Dispose();
+						((IDisposable) disposable).Dispose();
 					}
 				}
 			}
 
 			public async ValueTask DisposeAsync()
 			{
-				foreach (var @object in _disposables)
+				foreach (var disposable in _disposables)
 				{
-					if (@object is IAsyncDisposable asyncDisposable)
+					if (disposable is IAsyncDisposable asyncDisposable)
 					{
 						await asyncDisposable.DisposeAsync();
 					}
 					else
 					{
-						((IDisposable) @object).Dispose();
+						((IDisposable) disposable).Dispose();
 					}
 				}
 			}
@@ -186,12 +186,12 @@ namespace Depra.IoC
 
 			internal object ResolveInternal(ServiceDescriptor descriptor) =>
 				descriptor.Lifetime == LifetimeType.TRANSIENT
-					? CreateInstanceInternal(descriptor)
+					? CreateInstance(descriptor)
 					: descriptor.Lifetime == LifetimeType.SCOPED || _container._rootScope == this
-						? _scopedInstances.GetOrAdd(descriptor, _ => CreateInstanceInternal(descriptor))
+						? _scopedInstances.GetOrAdd(descriptor, _ => CreateInstance(descriptor))
 						: _container._rootScope.ResolveInternal(descriptor);
 
-			private object CreateInstanceInternal(ServiceDescriptor descriptor)
+			private object CreateInstance(ServiceDescriptor descriptor)
 			{
 				var result = _container.CreateInstance(this, descriptor);
 				if (result is IDisposable)
