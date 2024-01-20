@@ -15,7 +15,10 @@ namespace Depra.IoC.Activation
 		public Func<IScope, object> BuildActivation(ServiceDescriptor descriptor)
 		{
 			var typeBased = (TypeBasedServiceDescriptor) descriptor;
-			var constructor = SelectConstructor(typeBased.ImplementationType);
+			var constructor = typeBased.ImplementationType
+				.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+				.Single();
+
 			Guard.AgainstNull(constructor, () => new SuitableConstructorNotFound());
 
 			var args = constructor.GetParameters();
@@ -24,9 +27,6 @@ namespace Depra.IoC.Activation
 		}
 
 		protected abstract Func<IScope, object> BuildActivation(ConstructorInfo constructor, ParameterInfo[] args);
-
-		private static ConstructorInfo SelectConstructor(Type implementation) =>
-			implementation.GetConstructors(BindingFlags.Public | BindingFlags.Instance).Single();
 
 		public override string ToString() => GetType().Name;
 	}

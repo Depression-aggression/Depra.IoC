@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Depra.IoC.Activation;
 using Depra.IoC.Description;
@@ -22,7 +23,7 @@ namespace Depra.IoC
 		private readonly ConcurrentDictionary<Type, ServiceDescriptor> _descriptors;
 		private readonly ConcurrentDictionary<ServiceDescriptor, Func<IScope, object>> _buildActivators;
 
-		public Container(IEnumerable<ServiceDescriptor> descriptors, IActivationBuilder activationBuilder)
+		public Container(IActivationBuilder activationBuilder, IEnumerable<ServiceDescriptor> descriptors)
 		{
 			Guard.AgainstNull(descriptors, nameof(descriptors));
 			Guard.AgainstNull(activationBuilder, nameof(activationBuilder));
@@ -35,17 +36,11 @@ namespace Depra.IoC
 			FillDescriptors(descriptors);
 		}
 
-		public void Dispose()
-		{
-			_rootScope.Dispose();
-			GC.SuppressFinalize(this);
-		}
+		public void Dispose() => _rootScope.Dispose();
 
-		public async ValueTask DisposeAsync()
-		{
-			await _rootScope.DisposeAsync().ConfigureAwait(false);
-			GC.SuppressFinalize(this);
-		}
+		public async ValueTask DisposeAsync() => await _rootScope
+			.DisposeAsync()
+			.ConfigureAwait(false);
 
 		public IScope CreateScope() => new Scope(this);
 
@@ -84,6 +79,7 @@ namespace Depra.IoC
 			return _descriptors.GetOrAdd(genericType, argumentsDescriptor);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private object CreateInstance(IScope scope, ServiceDescriptor descriptor) =>
 			_buildActivators.GetOrAdd(descriptor, _ => BuildActivation(descriptor, _activationBuilder))(scope);
 
@@ -95,10 +91,12 @@ namespace Depra.IoC
 			_ => activationBuilder.BuildActivation((TypeBasedServiceDescriptor) serviceDescriptor)
 		};
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private void FillDescriptors(IEnumerable<ServiceDescriptor> descriptors)
 		{
 			var descriptorsAsDictionary = (IDictionary<Type, ServiceDescriptor>) _descriptors;
-			foreach (var descriptorsGroup in descriptors.GroupBy(x => x.Type))
+			var descriptorGroups = descriptors.GroupBy(x => x.Type);
+			foreach (var descriptorsGroup in descriptorGroups)
 			{
 				var items = descriptorsGroup.ToArray();
 				if (items.Length == 1)
@@ -116,6 +114,7 @@ namespace Depra.IoC
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static ServiceDescriptor BuildUsingMultipleDescriptor(Type serviceType, ServiceDescriptor descriptor) =>
 			new FactoryBasedServiceDescriptor(serviceType, LifetimeType.TRANSIENT, scope =>
 			{
@@ -184,6 +183,7 @@ namespace Depra.IoC
 				return ResolveInternal(descriptor);
 			}
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			internal object ResolveInternal(ServiceDescriptor descriptor) =>
 				descriptor.Lifetime == LifetimeType.TRANSIENT
 					? CreateInstance(descriptor)
@@ -191,6 +191,7 @@ namespace Depra.IoC
 						? _scopedInstances.GetOrAdd(descriptor, _ => CreateInstance(descriptor))
 						: _container._rootScope.ResolveInternal(descriptor);
 
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			private object CreateInstance(ServiceDescriptor descriptor)
 			{
 				var result = _container.CreateInstance(this, descriptor);

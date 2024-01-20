@@ -3,7 +3,7 @@
 
 using Depra.IoC.Description;
 
-namespace Depra.IoC.Builder
+namespace Depra.IoC.QoL.Builder
 {
 	public interface IContainerBuilder
 	{

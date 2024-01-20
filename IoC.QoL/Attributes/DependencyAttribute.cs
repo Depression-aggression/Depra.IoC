@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Depra.IoC.Attributes
+namespace Depra.IoC.QoL.Attributes
 {
 	public sealed class DependencyAttribute : Attribute { }
 }

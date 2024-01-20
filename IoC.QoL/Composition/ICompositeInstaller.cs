@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace Depra.IoC.Composition
+namespace Depra.IoC.QoL.Composition
 {
 	public interface ICompositeInstaller<out TInstaller> : IInstaller where TInstaller : IInstaller
 	{

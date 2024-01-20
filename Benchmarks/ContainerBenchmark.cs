@@ -2,7 +2,7 @@
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
 using Depra.IoC.Activation;
-using Depra.IoC.Builder;
+using Depra.IoC.QoL.Builder;
 using Depra.IoC.Scope;
 
 namespace Depra.IoC.Benchmarks;

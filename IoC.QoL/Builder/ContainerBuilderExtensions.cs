@@ -7,7 +7,7 @@ using Depra.IoC.Description;
 using Depra.IoC.Enums;
 using Depra.IoC.Scope;
 
-namespace Depra.IoC.Builder
+namespace Depra.IoC.QoL.Builder
 {
 	public static class ContainerBuilderExtensions
 	{

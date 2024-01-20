@@ -6,7 +6,7 @@ using Depra.IoC.Activation;
 using Depra.IoC.Description;
 using Depra.IoC.Exceptions;
 
-namespace Depra.IoC.Builder
+namespace Depra.IoC.QoL.Builder
 {
 	public sealed class ContainerBuilder : IContainerBuilder
 	{
@@ -21,7 +21,7 @@ namespace Depra.IoC.Builder
 			_descriptors = new List<ServiceDescriptor>();
 		}
 
-		public IContainer Build() => new Container(_descriptors, _activationBuilder);
+		public IContainer Build() => new Container(_activationBuilder, _descriptors);
 
 		public void Register(ServiceDescriptor descriptor) => _descriptors.Add(descriptor);
 

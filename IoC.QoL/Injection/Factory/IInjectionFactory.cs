@@ -2,9 +2,9 @@
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
 using System.Reflection;
-using Depra.IoC.Injection.Delegates;
+using Depra.IoC.QoL.Injection.Delegates;
 
-namespace Depra.IoC.Injection.Factory
+namespace Depra.IoC.QoL.Injection.Factory
 {
 	public interface IInjectionFactory
 	{
