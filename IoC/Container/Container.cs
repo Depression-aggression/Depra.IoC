@@ -67,7 +67,7 @@ namespace Depra.IoC
 
 			var genericTypeDefinition = service.GetGenericTypeDefinition();
 			var genericDescriptor = FindDescriptor(genericTypeDefinition);
-			if (!(genericDescriptor is TypeBasedServiceDescriptor typeBased))
+			if (genericDescriptor is not TypeBasedServiceDescriptor typeBased)
 			{
 				return null;
 			}
@@ -105,8 +105,8 @@ namespace Depra.IoC
 				}
 				else
 				{
-					const LifetimeType lifetime = (LifetimeType) int.MaxValue;
-					var multiple = new MultipleServicesDescriptor(descriptorsGroup.Key, lifetime, items);
+					const LifetimeType LIFETIME = (LifetimeType) int.MaxValue;
+					var multiple = new MultipleServicesDescriptor(descriptorsGroup.Key, LIFETIME, items);
 					descriptorsAsDictionary.Add(descriptorsGroup.Key, multiple);
 					var serviceType = typeof(IEnumerable<>).MakeGenericType(descriptorsGroup.Key);
 					descriptorsAsDictionary.Add(serviceType, BuildUsingMultipleDescriptor(serviceType, multiple));

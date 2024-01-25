@@ -70,6 +70,16 @@ namespace Depra.IoC.QoL.Builder
 			=> self.RegisterType(typeof(TService), typeof(TImplementation), LifetimeType.SINGLETON);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton<TService>(this IContainerBuilder self,
+			TService instance) =>
+			self.RegisterInstance(typeof(TService), instance);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static IContainerBuilder RegisterSingleton<TService, TImplementation>(this IContainerBuilder self,
+			TImplementation instance) where TImplementation : TService =>
+			self.RegisterInstance(typeof(TService), instance);
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IContainerBuilder RegisterType(this IContainerBuilder self, Type service, Type implementation,
 			LifetimeType lifetime)
 		{

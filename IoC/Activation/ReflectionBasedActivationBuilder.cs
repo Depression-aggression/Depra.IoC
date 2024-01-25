@@ -28,13 +28,12 @@ namespace Depra.IoC.Activation
 			return arguments;
 		}
 
-		protected override Func<IScope, object> BuildActivation(ConstructorInfo constructor, ParameterInfo[] args) =>
-			scope =>
-			{
-				var argsForConstructor = GetConstructorArguments(scope, args);
-				var instance = constructor.Invoke(argsForConstructor);
+		protected override Func<IScope, object> BuildActivation(ConstructorInfo ctor, ParameterInfo[] args) => scope =>
+		{
+			var argsForConstructor = GetConstructorArguments(scope, args);
+			var instance = ctor.Invoke(argsForConstructor);
 
-				return instance;
-			};
+			return instance;
+		};
 	}
 }

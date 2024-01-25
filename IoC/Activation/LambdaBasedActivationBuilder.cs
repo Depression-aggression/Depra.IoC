@@ -22,11 +22,11 @@ namespace Depra.IoC.Activation
 			return resultExpression;
 		}
 
-		protected override Func<IScope, object> BuildActivation(ConstructorInfo constructor, ParameterInfo[] args)
+		protected override Func<IScope, object> BuildActivation(ConstructorInfo ctor, ParameterInfo[] args)
 		{
 			var scopeParameter = Expression.Parameter(typeof(IScope), "scope");
 			var expressionArgs = args.Select(x => SelectExpressionArgs(x, scopeParameter));
-			var @new = Expression.New(constructor, expressionArgs);
+			var @new = Expression.New(ctor, expressionArgs);
 			var lambda = Expression.Lambda<Func<IScope, object>>(@new, scopeParameter);
 
 			return lambda.Compile();

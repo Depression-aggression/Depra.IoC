@@ -26,7 +26,7 @@ namespace Depra.IoC.Activation
 			return BuildActivation(constructor, args);
 		}
 
-		protected abstract Func<IScope, object> BuildActivation(ConstructorInfo constructor, ParameterInfo[] args);
+		protected abstract Func<IScope, object> BuildActivation(ConstructorInfo ctor, ParameterInfo[] args);
 
 		public override string ToString() => GetType().Name;
 	}

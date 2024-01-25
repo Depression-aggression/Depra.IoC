@@ -2,13 +2,12 @@
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Depra.IoC.UnitTests;
+namespace Depra.IoC.QoL.UnitTests;
 
 internal static class Mocks
 {
-	internal class EmptyGeneric;
+	internal class EmptyGeneric { }
 
 	internal interface ITestService;
 
@@ -16,7 +15,6 @@ internal static class Mocks
 
 	internal sealed class GenericTestService<T> : ITestService where T : EmptyGeneric
 	{
-		[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 		public GenericTestService(T value)
 		{
 			if (value == null)
@@ -38,12 +36,13 @@ internal static class Mocks
 	{
 		public sealed class Token
 		{
-			private readonly Guid _guid = Guid.NewGuid();
+			private readonly Guid _guid;
+
+			public Token() => _guid = Guid.NewGuid();
 
 			public override string ToString() => _guid.ToString();
 		}
 
-		[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 		public TestServiceWithConstructor(Token token)
 		{
 			if (token == null)
@@ -55,7 +54,6 @@ internal static class Mocks
 
 	internal sealed class TestServiceWithEmptyConstructor : ITestService
 	{
-		[SuppressMessage("ReSharper", "EmptyConstructor")]
 		public TestServiceWithEmptyConstructor() { }
 	}
 }
