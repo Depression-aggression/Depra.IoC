@@ -17,12 +17,11 @@ namespace Depra.IoC.Activation
 			var typeBased = (TypeBasedServiceDescriptor) descriptor;
 			var constructor = typeBased.ImplementationType
 				.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
-				.Single();
+				.FirstOrDefault();
 
 			Guard.AgainstNull(constructor, () => new SuitableConstructorNotFound());
 
-			var args = constructor.GetParameters();
-
+			var args = constructor!.GetParameters();
 			return BuildActivation(constructor, args);
 		}
 
