@@ -7,6 +7,8 @@ namespace Depra.IoC.Scope
 {
 	public interface IScope : IDisposable, IAsyncDisposable
 	{
+		bool CanResolve(Type service);
+
 		object Resolve(Type service);
 	}
 }

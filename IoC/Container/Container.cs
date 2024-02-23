@@ -175,6 +175,8 @@ namespace Depra.IoC
 				}
 			}
 
+			public bool CanResolve(Type service) => _container.FindDescriptor(service) != null;
+
 			public object Resolve(Type service)
 			{
 				var descriptor = _container.FindDescriptor(service);

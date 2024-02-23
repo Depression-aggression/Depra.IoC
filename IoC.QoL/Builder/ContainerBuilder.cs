@@ -1,6 +1,7 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
+using System;
 using System.Collections.Generic;
 using Depra.IoC.Activation;
 using Depra.IoC.Description;
@@ -21,10 +22,11 @@ namespace Depra.IoC.QoL.Builder
 			_descriptors = new List<ServiceDescriptor>();
 		}
 
+		public bool Exists(Type service) => _descriptors
+			.Exists(x => x.Type == service);
+
 		public IContainer Build() => new Container(_activationBuilder, _descriptors);
 
 		public void Register(ServiceDescriptor descriptor) => _descriptors.Add(descriptor);
-
-		public override string ToString() => GetType().Name;
 	}
 }
