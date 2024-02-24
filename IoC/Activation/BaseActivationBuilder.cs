@@ -19,7 +19,7 @@ namespace Depra.IoC.Activation
 				.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
 				.FirstOrDefault();
 
-			Guard.AgainstNull(constructor, () => new SuitableConstructorNotFound());
+			Guard.AgainstNull(constructor, () => new SuitableConstructorNotFound(typeBased.ImplementationType));
 
 			var args = constructor!.GetParameters();
 			return BuildActivation(constructor, args);
