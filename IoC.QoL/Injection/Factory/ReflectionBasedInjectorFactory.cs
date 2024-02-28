@@ -8,12 +8,9 @@ namespace Depra.IoC.QoL.Injection.Factory
 {
 	public sealed class ReflectionBasedInjectorFactory : IInjectionFactory
 	{
-		public ConstructorInjector Create(ConstructorInfo constructor) => constructor.Invoke;
-
-		public PropertyInjector Create(PropertyInfo property) =>
-			(target, value) => property.SetValue(target, value, null);
-
-		public MethodInjector Create(MethodInfo method) =>
-			(target, args) => method.Invoke(target, args);
+		FieldInjector IInjectionFactory.Create(FieldInfo field) => field.SetValue;
+		PropertyInjector IInjectionFactory.Create(PropertyInfo property) => property.SetValue;
+		ConstructorInjector IInjectionFactory.Create(ConstructorInfo constructor) => constructor.Invoke;
+		MethodInjector IInjectionFactory.Create(MethodInfo method) => (target, args) => method.Invoke(target, args);
 	}
 }

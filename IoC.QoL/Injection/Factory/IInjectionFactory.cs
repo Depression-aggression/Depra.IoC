@@ -8,10 +8,9 @@ namespace Depra.IoC.QoL.Injection.Factory
 {
 	public interface IInjectionFactory
 	{
-		ConstructorInjector Create(ConstructorInfo constructor);
-
-		PropertyInjector Create(PropertyInfo property);
-
+		FieldInjector Create(FieldInfo field);
 		MethodInjector Create(MethodInfo method);
+		PropertyInjector Create(PropertyInfo property);
+		ConstructorInjector Create(ConstructorInfo constructor);
 	}
 }
