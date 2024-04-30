@@ -3,12 +3,13 @@
 
 using Depra.IoC.Activation;
 using Depra.IoC.Enums;
+using Depra.IoC.Exceptions;
 using Depra.IoC.QoL.Builder;
 using Depra.IoC.Scope;
 
 namespace Depra.IoC.QoL.UnitTests;
 
-internal sealed class ContainerTests
+internal sealed class ContainerBuilderTests
 {
 	private static IEnumerable<LifetimeType> GetLifetime()
 	{
@@ -24,14 +25,14 @@ internal sealed class ContainerTests
 	}
 
 	[Test]
-	public void WhenRegisteringByImplType_AndResolvingByImplType_ThenResolvedTypeEqualsToRegisteredType(
+	public void ResolveByImplType_WhenRegisterByImplType_ThenResolvedTypeEqualsToRegisteredType(
 		[ValueSource(nameof(GetLifetime))] LifetimeType lifetime,
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
 		var implementationType = typeof(Mocks.TestService);
-		using var container = new ContainerBuilder(activationBuilder)
+		using var container = new Builder.ContainerBuilder(activationBuilder)
 			.RegisterType(implementationType, implementationType, lifetime)
 			.Build();
 		var scope = container.CreateScope();
@@ -40,11 +41,11 @@ internal sealed class ContainerTests
 		var service = scope.Resolve<Mocks.TestService>();
 
 		// Assert:
-		//service.Should().BeOfType(implementationType);
+		service.Should().BeOfType(implementationType);
 	}
 
 	[Test]
-	public void WhenRegisteringByInterface_AndResolvingByInterface_ThenResolvedTypeEqualsToRegisteredType(
+	public void ResolveByInterface_WhenRegisteredByInterface_ThenResolvedTypeEqualsToRegisteredType(
 		[ValueSource(nameof(GetLifetime))] LifetimeType lifetime,
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
@@ -52,7 +53,7 @@ internal sealed class ContainerTests
 		// Arrange:
 		var interfaceType = typeof(Mocks.ITestService);
 		var implementationType = typeof(Mocks.TestService);
-		using var container = new ContainerBuilder(activationBuilder)
+		using var container = new Builder.ContainerBuilder(activationBuilder)
 			.RegisterType(interfaceType, implementationType, lifetime)
 			.Build();
 		var scope = container.CreateScope();
@@ -61,32 +62,32 @@ internal sealed class ContainerTests
 		var service = scope.Resolve<Mocks.ITestService>();
 
 		// Assert:
-		//service.Should().BeOfType(implementationType);
+		service.Should().BeOfType(implementationType);
 	}
 #if DEBUG
 	[Test]
-	public void WhenResolvingByType_AndTypeNotRegisteredInContainer_ThenInvalidOperationExceptionIsThrown(
+	public void ResolveByType_WhenTypeNotRegisteredInContainer_ThrowsInvalidOperationException(
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		using var container = new ContainerBuilder(activationBuilder).Build();
+		using var container = new Builder.ContainerBuilder(activationBuilder).Build();
 		var scope = container.CreateScope();
 
 		// Act:
 		var act = () => scope.Resolve<Mocks.TestService>();
 
 		// Assert:
-		//act.Should().Throw<UnableFindRegistration>();
+		act.Should().Throw<UnableFindRegistration>();
 	}
 #endif
 	[Test]
-	public void WhenResolvingType_AndTypeConstructorIsEmpty_ThenResolvedTypeEqualsToRegisteredType(
+	public void ResolveType_WhenTypeConstructorIsEmpty_ThenResolvedTypeEqualsToRegisteredType(
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		using var container = new ContainerBuilder(activationBuilder)
+		using var container = new Builder.ContainerBuilder(activationBuilder)
 			.RegisterTransient<Mocks.ITestService, Mocks.TestServiceWithEmptyConstructor>()
 			.Build();
 		var scope = container.CreateScope();
@@ -95,16 +96,16 @@ internal sealed class ContainerTests
 		var service = scope.Resolve<Mocks.ITestService>();
 
 		// Assert:
-		//service.Should().BeOfType<Mocks.TestServiceWithEmptyConstructor>();
+		service.Should().BeOfType<Mocks.TestServiceWithEmptyConstructor>();
 	}
 
 	[Test]
-	public void WhenResolvingType_AndTypeConstructorIsNotEmpty_ThenResolvedTypeEqualsToRegisteredType(
+	public void ResolveType_WhenTypeConstructorIsNotEmpty_ThenResolvedTypeEqualsToRegisteredType(
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		using var container = new ContainerBuilder(activationBuilder)
+		using var container = new Builder.ContainerBuilder(activationBuilder)
 			.RegisterSingleton<Mocks.TestServiceWithConstructor.Token>()
 			.RegisterTransient<Mocks.ITestService, Mocks.TestServiceWithConstructor>()
 			.Build();
@@ -114,16 +115,16 @@ internal sealed class ContainerTests
 		var service = scope.Resolve<Mocks.ITestService>();
 
 		// Assert:
-		//service.Should().BeOfType<Mocks.TestServiceWithConstructor>();
+		service.Should().BeOfType<Mocks.TestServiceWithConstructor>();
 	}
 
 	[Test]
-	public void WhenResolvingType_AndTypeIsGeneric_ThenResolvedTypeEqualsToRegisteredType(
+	public void ResolveType_WhenTypeIsGeneric_ThenResolvedTypeEqualsToRegisteredType(
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		using var container = new ContainerBuilder(activationBuilder)
+		using var container = new Builder.ContainerBuilder(activationBuilder)
 			.RegisterTransient<Mocks.EmptyGeneric>()
 			.RegisterTransient<Mocks.GenericTestService<Mocks.EmptyGeneric>>()
 			.Build();
@@ -133,16 +134,16 @@ internal sealed class ContainerTests
 		var service = scope.Resolve<Mocks.GenericTestService<Mocks.EmptyGeneric>>();
 
 		// Assert:
-		//service.Should().BeOfType<Mocks.GenericTestService<Mocks.EmptyGeneric>>();
+		service.Should().BeOfType<Mocks.GenericTestService<Mocks.EmptyGeneric>>();
 	}
 
 	[Test]
-	public void WhenResolvingType_AndTypeIsEnumerable_ThenResolvedTypeEqualsToRegisteredType(
+	public void ResolveType_WhenTypeIsEnumerable_ThenResolvedTypeEqualsToRegisteredType(
 		[ValueSource(nameof(GetActivationBuilders))]
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		using var container = new ContainerBuilder(activationBuilder)
+		using var container = new Builder.ContainerBuilder(activationBuilder)
 			.RegisterTransient<Mocks.EmptyGeneric>()
 			.RegisterTransient<Mocks.EnumerableTestService>()
 			.Build();
@@ -152,6 +153,6 @@ internal sealed class ContainerTests
 		var service = scope.Resolve<Mocks.EnumerableTestService>();
 
 		// Assert:
-		//service.Should().BeOfType<Mocks.EnumerableTestService>();
+		service.Should().BeOfType<Mocks.EnumerableTestService>();
 	}
 }

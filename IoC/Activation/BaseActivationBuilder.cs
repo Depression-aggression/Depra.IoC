@@ -12,9 +12,9 @@ namespace Depra.IoC.Activation
 {
 	public abstract class BaseActivationBuilder : IActivationBuilder
 	{
-		public Func<IScope, object> BuildActivation(ServiceDescriptor descriptor)
+		public Func<IScope, object> BuildActivation(ServiceDescription description)
 		{
-			var typeBased = (TypeBasedServiceDescriptor) descriptor;
+			var typeBased = (TypeBasedServiceDescription) description;
 			var constructor = typeBased.ImplementationType
 				.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
 				.FirstOrDefault();

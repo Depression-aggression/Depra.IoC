@@ -1,7 +1,6 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
-
-using System.Collections;
+// ReSharper disable All
 
 namespace Depra.IoC.QoL.UnitTests;
 
@@ -26,8 +25,7 @@ internal static class Mocks
 
 	internal sealed class EnumerableTestService : ITestService, IEnumerable<EmptyGeneric>
 	{
-		public IEnumerator<EmptyGeneric> GetEnumerator() =>
-			throw new NotImplementedException();
+		public IEnumerator<EmptyGeneric> GetEnumerator() => throw new NotImplementedException();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}

@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyName>Depra.IoC.Benchmarks</AssemblyName>
         <RootNamespace>Depra.IoC.Benchmarks</RootNamespace>
         <LangVersion>default</LangVersion>

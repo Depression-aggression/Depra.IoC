@@ -1,12 +1,16 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
-using Depra.IoC.QoL.Builder;
+using Depra.IoC.Scope;
 
 namespace Depra.IoC.QoL.Composition
 {
-	public interface IInstaller
+	public interface ICompositionRoot
 	{
-		void Install(IContainerBuilder builder);
+		void Register();
+
+		void Resolve(IScope scope);
+
+		void Release();
 	}
 }

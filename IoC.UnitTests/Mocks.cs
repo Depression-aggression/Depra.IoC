@@ -1,8 +1,6 @@
 ﻿// SPDX-License-Identifier: Apache-2.0
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
-
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+// ReSharper disable All
 
 namespace Depra.IoC.UnitTests;
 
@@ -16,7 +14,6 @@ internal static class Mocks
 
 	internal sealed class GenericTestService<T> : ITestService where T : EmptyGeneric
 	{
-		[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 		public GenericTestService(T value)
 		{
 			if (value == null)
@@ -28,8 +25,7 @@ internal static class Mocks
 
 	internal sealed class EnumerableTestService : ITestService, IEnumerable<EmptyGeneric>
 	{
-		public IEnumerator<EmptyGeneric> GetEnumerator() =>
-			throw new NotImplementedException();
+		public IEnumerator<EmptyGeneric> GetEnumerator() => throw new NotImplementedException();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
@@ -43,7 +39,6 @@ internal static class Mocks
 			public override string ToString() => _guid.ToString();
 		}
 
-		[SuppressMessage("ReSharper", "ParameterOnlyUsedForPreconditionCheck.Local")]
 		public TestServiceWithConstructor(Token token)
 		{
 			if (token == null)
@@ -55,7 +50,6 @@ internal static class Mocks
 
 	internal sealed class TestServiceWithEmptyConstructor : ITestService
 	{
-		[SuppressMessage("ReSharper", "EmptyConstructor")]
 		public TestServiceWithEmptyConstructor() { }
 	}
 }

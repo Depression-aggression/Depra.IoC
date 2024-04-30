@@ -6,9 +6,9 @@ using Depra.IoC.Enums;
 
 namespace Depra.IoC.Description
 {
-    public abstract class ServiceDescriptor
+    public abstract class ServiceDescription
     {
-        protected ServiceDescriptor(Type type, LifetimeType lifetime)
+        protected ServiceDescription(Type type, LifetimeType lifetime)
         {
             Type = type;
             Lifetime = lifetime;

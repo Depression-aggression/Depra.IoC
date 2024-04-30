@@ -11,22 +11,21 @@ namespace Depra.IoC.QoL.Builder
 {
 	public sealed class ContainerBuilder : IContainerBuilder
 	{
-		private readonly List<ServiceDescriptor> _descriptors;
 		private readonly IActivationBuilder _activationBuilder;
+		private readonly List<ServiceDescription> _descriptions;
 
 		public ContainerBuilder(IActivationBuilder activationBuilder)
 		{
 			Guard.AgainstNull(activationBuilder, nameof(activationBuilder));
 
 			_activationBuilder = activationBuilder;
-			_descriptors = new List<ServiceDescriptor>();
+			_descriptions = new List<ServiceDescription>();
 		}
 
-		public bool Exists(Type service) => _descriptors
-			.Exists(x => x.Type == service);
+		public bool Exists(Type service) => _descriptions.Exists(x => x.Type == service);
 
-		public IContainer Build() => new Container(_activationBuilder, _descriptors);
+		public IContainer Build() => new Container(_activationBuilder, _descriptions);
 
-		public void Register(ServiceDescriptor descriptor) => _descriptors.Add(descriptor);
+		public void Register(ServiceDescription description) => _descriptions.Add(description);
 	}
 }

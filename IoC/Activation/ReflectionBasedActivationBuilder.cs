@@ -30,8 +30,8 @@ namespace Depra.IoC.Activation
 
 		protected override Func<IScope, object> BuildActivation(ConstructorInfo ctor, ParameterInfo[] args) => scope =>
 		{
-			var argsForConstructor = GetConstructorArguments(scope, args);
-			var instance = ctor.Invoke(argsForConstructor);
+			var ctorArgs = GetConstructorArguments(scope, args);
+			var instance = ctor.Invoke(ctorArgs);
 
 			return instance;
 		};

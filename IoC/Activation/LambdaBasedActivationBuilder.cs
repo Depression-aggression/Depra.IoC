@@ -11,12 +11,12 @@ namespace Depra.IoC.Activation
 {
 	public sealed class LambdaBasedActivationBuilder : BaseActivationBuilder
 	{
-		private static readonly MethodInfo RESOLVE_METHOD = typeof(IScope).GetMethod("Resolve");
+		private static readonly MethodInfo RESOLVE_INFO = typeof(IScope).GetMethod("Resolve");
 
 		private static UnaryExpression SelectExpressionArgs(ParameterInfo parameterInfo, Expression parameterExpression)
 		{
 			var constantExpression = Expression.Constant(parameterInfo.ParameterType);
-			var methodCallExpression = Expression.Call(parameterExpression, RESOLVE_METHOD, constantExpression);
+			var methodCallExpression = Expression.Call(parameterExpression, RESOLVE_INFO, constantExpression);
 			var resultExpression = Expression.Convert(methodCallExpression, parameterInfo.ParameterType);
 
 			return resultExpression;

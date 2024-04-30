@@ -10,7 +10,7 @@
         <Copyright>Copyright © 2022-2024 Nikolay Melnikov. All rights reserved.</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <RepositoryType>Module</RepositoryType>
-        <RepositoryUrl>https://github.com/Depression-aggression/IoC-Container</RepositoryUrl>
+        <RepositoryUrl>https://github.com/Depra-Inc/IoC</RepositoryUrl>
         <PackageTags>DI, IoC, container, inversion, control, dependency, inversion, domain</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

@@ -7,10 +7,9 @@ using Depra.IoC.Exceptions;
 
 namespace Depra.IoC.Description
 {
-	public sealed class TypeBasedServiceDescriptor : ServiceDescriptor
+	public sealed class TypeBasedServiceDescription : ServiceDescription
 	{
-		public TypeBasedServiceDescriptor(Type implementationType, Type type, LifetimeType lifetime) :
-			base(type, lifetime)
+		public TypeBasedServiceDescription(Type implementationType, Type type, LifetimeType lifetime) : base(type, lifetime)
 		{
 			Guard.AgainstNull(implementationType, nameof(implementationType));
 			ImplementationType = implementationType;

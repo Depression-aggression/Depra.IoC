@@ -9,22 +9,20 @@ namespace Depra.IoC.Benchmarks;
 
 public class ContainerBenchmark
 {
+	private static IContainer BuildContainer(IActivationBuilder activationBuilder) =>
+		new QoL.Builder.ContainerBuilder(activationBuilder)
+			.RegisterTransient<IService, Service>()
+			.RegisterTransient<Controller>()
+			.Build();
+
 	private IScope _lambdaBased;
 	private IScope _reflectionBased;
 
 	[GlobalSetup]
 	public void GlobalSetup()
 	{
-		_lambdaBased = BuildContainer(new LambdaBasedActivationBuilder())
-			.CreateScope();
-		_reflectionBased = BuildContainer(new ReflectionBasedActivationBuilder())
-			.CreateScope();
-
-		IContainer BuildContainer(IActivationBuilder activationBuilder) =>
-			new ContainerBuilder(activationBuilder)
-				.RegisterTransient<IService, Service>()
-				.RegisterTransient<Controller>()
-				.Build();
+		_lambdaBased = BuildContainer(new LambdaBasedActivationBuilder()).CreateScope();
+		_reflectionBased = BuildContainer(new ReflectionBasedActivationBuilder()).CreateScope();
 	}
 
 	[GlobalCleanup]
@@ -35,24 +33,19 @@ public class ContainerBenchmark
 	}
 
 	[Benchmark(Baseline = true)]
-	public IController CreateUsingConstructor() =>
-		new Controller(new Service());
+	public IController CreateUsingConstructor() => new Controller(new Service());
 
 	[Benchmark]
-	public IController ResolveByTypeUsingLambdas() =>
-		_lambdaBased.Resolve<Controller>();
+	public IController ResolveByTypeUsingLambdas() => _lambdaBased.Resolve<Controller>();
 
 	[Benchmark]
-	public IController ResolveByTypeUsingReflection() =>
-		_reflectionBased.Resolve<Controller>();
+	public IController ResolveByTypeUsingReflection() => _reflectionBased.Resolve<Controller>();
 
 	[Benchmark]
-	public IController ResolveByInterfaceUsingLambdas() =>
-		_lambdaBased.Resolve<Controller>();
+	public IController ResolveByInterfaceUsingLambdas() => _lambdaBased.Resolve<Controller>();
 
 	[Benchmark]
-	public IController ResolveByInterfaceUsingReflection() =>
-		_reflectionBased.Resolve<Controller>();
+	public IController ResolveByInterfaceUsingReflection() => _reflectionBased.Resolve<Controller>();
 
 	private interface IService { }
 

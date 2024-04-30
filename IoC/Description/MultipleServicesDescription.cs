@@ -7,15 +7,14 @@ using Depra.IoC.Exceptions;
 
 namespace Depra.IoC.Description
 {
-	public sealed class MultipleServicesDescriptor : ServiceDescriptor
+	public sealed class MultipleServicesDescription : ServiceDescription
 	{
-		public MultipleServicesDescriptor(Type type, LifetimeType lifetime, ServiceDescriptor[] descriptors) :
-			base(type, lifetime)
+		public MultipleServicesDescription(Type type, LifetimeType lifetime, ServiceDescription[] descriptors) : base(type, lifetime)
 		{
 			Guard.AgainstNull(descriptors, nameof(descriptors));
 			Descriptors = descriptors;
 		}
 
-		public ServiceDescriptor[] Descriptors { get; }
+		public ServiceDescription[] Descriptors { get; }
 	}
 }

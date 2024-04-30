@@ -83,7 +83,7 @@ namespace Depra.IoC.QoL.Builder
 		public static IContainerBuilder RegisterType(this IContainerBuilder self, Type service, Type implementation,
 			LifetimeType lifetime)
 		{
-			self.Register(new TypeBasedServiceDescriptor(implementation, service, lifetime));
+			self.Register(new TypeBasedServiceDescription(implementation, service, lifetime));
 			return self;
 		}
 
@@ -91,14 +91,14 @@ namespace Depra.IoC.QoL.Builder
 		private static IContainerBuilder RegisterFactory(this IContainerBuilder self, Type service,
 			Func<IScope, object> factory, LifetimeType lifetime)
 		{
-			self.Register(new FactoryBasedServiceDescriptor(service, lifetime, factory));
+			self.Register(new FactoryBasedServiceDescription(service, lifetime, factory));
 			return self;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static IContainerBuilder RegisterInstance(this IContainerBuilder self, Type service, object instance)
 		{
-			self.Register(new InstanceBasedServiceDescriptor(service, instance));
+			self.Register(new InstanceBasedServiceDescription(service, instance));
 			return self;
 		}
 	}

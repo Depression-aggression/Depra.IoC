@@ -13,10 +13,10 @@ namespace Depra.IoC.QoL.Scope
 		private readonly IScope[] _scopes;
 		private readonly IScope _rootScope;
 
-		public CombinedScope(IScope rootScope, params IScope[] scopes)
+		public CombinedScope(IScope root, params IScope[] scopes)
 		{
 			_scopes = scopes;
-			_rootScope = rootScope;
+			_rootScope = root;
 		}
 
 		bool IScope.CanResolve(Type service) =>

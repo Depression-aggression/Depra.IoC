@@ -12,6 +12,6 @@ namespace Depra.IoC.QoL.Builder
 
 		bool Exists(Type service);
 
-		void Register(ServiceDescriptor descriptor);
+		void Register(ServiceDescription description);
 	}
 }

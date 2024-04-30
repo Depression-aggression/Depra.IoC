@@ -32,8 +32,8 @@ internal sealed class ContainerTests
 	{
 		// Arrange:
 		var implementationType = typeof(Mocks.TestService);
-		var descriptors = new ServiceDescriptor[]
-			{ new TypeBasedServiceDescriptor(implementationType, implementationType, lifetime) };
+		var descriptors = new ServiceDescription[]
+			{ new TypeBasedServiceDescription(implementationType, implementationType, lifetime) };
 		using var container = new Container(activationBuilder, descriptors);
 		var scope = container.CreateScope();
 
@@ -53,8 +53,8 @@ internal sealed class ContainerTests
 		// Arrange:
 		var interfaceType = typeof(Mocks.ITestService);
 		var implementationType = typeof(Mocks.TestService);
-		var descriptors = new ServiceDescriptor[]
-			{ new TypeBasedServiceDescriptor(implementationType, interfaceType, lifetime) };
+		var descriptors = new ServiceDescription[]
+			{ new TypeBasedServiceDescription(implementationType, interfaceType, lifetime) };
 		using var container = new Container(activationBuilder, descriptors);
 		var scope = container.CreateScope();
 
@@ -71,7 +71,7 @@ internal sealed class ContainerTests
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		var descriptions = Array.Empty<ServiceDescriptor>();
+		var descriptions = Array.Empty<ServiceDescription>();
 		using var container = new Container(activationBuilder, descriptions);
 		var scope = container.CreateScope();
 
@@ -91,8 +91,8 @@ internal sealed class ContainerTests
 		const LifetimeType LIFETIME = LifetimeType.TRANSIENT;
 		var interfaceType = typeof(Mocks.ITestService);
 		var implementationType = typeof(Mocks.TestServiceWithEmptyConstructor);
-		var descriptors = new ServiceDescriptor[]
-			{ new TypeBasedServiceDescriptor(implementationType, interfaceType, LIFETIME) };
+		var descriptors = new ServiceDescription[]
+			{ new TypeBasedServiceDescription(implementationType, interfaceType, LIFETIME) };
 		using var container = new Container(activationBuilder, descriptors);
 		var scope = container.CreateScope();
 
@@ -109,12 +109,12 @@ internal sealed class ContainerTests
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		var descriptors = new ServiceDescriptor[]
+		var descriptors = new ServiceDescription[]
 		{
-			new TypeBasedServiceDescriptor(lifetime: LifetimeType.SINGLETON,
+			new TypeBasedServiceDescription(lifetime: LifetimeType.SINGLETON,
 				type: typeof(Mocks.TestServiceWithConstructor.Token),
 				implementationType: typeof(Mocks.TestServiceWithConstructor.Token)),
-			new TypeBasedServiceDescriptor(lifetime: LifetimeType.TRANSIENT,
+			new TypeBasedServiceDescription(lifetime: LifetimeType.TRANSIENT,
 				type: typeof(Mocks.ITestService),
 				implementationType: typeof(Mocks.TestServiceWithConstructor))
 		};
@@ -134,11 +134,11 @@ internal sealed class ContainerTests
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		var descriptors = new ServiceDescriptor[]
+		var descriptors = new ServiceDescription[]
 		{
-			new TypeBasedServiceDescriptor(lifetime: LifetimeType.TRANSIENT,
+			new TypeBasedServiceDescription(lifetime: LifetimeType.TRANSIENT,
 				type: typeof(Mocks.EmptyGeneric), implementationType: typeof(Mocks.EmptyGeneric)),
-			new TypeBasedServiceDescriptor(lifetime: LifetimeType.TRANSIENT,
+			new TypeBasedServiceDescription(lifetime: LifetimeType.TRANSIENT,
 				type: typeof(Mocks.GenericTestService<Mocks.EmptyGeneric>),
 				implementationType: typeof(Mocks.GenericTestService<Mocks.EmptyGeneric>))
 		};
@@ -158,11 +158,11 @@ internal sealed class ContainerTests
 		IActivationBuilder activationBuilder)
 	{
 		// Arrange:
-		var descriptors = new ServiceDescriptor[]
+		var descriptors = new ServiceDescription[]
 		{
-			new TypeBasedServiceDescriptor(lifetime: LifetimeType.TRANSIENT,
+			new TypeBasedServiceDescription(lifetime: LifetimeType.TRANSIENT,
 				type: typeof(Mocks.EmptyGeneric), implementationType: typeof(Mocks.EmptyGeneric)),
-			new TypeBasedServiceDescriptor(lifetime: LifetimeType.TRANSIENT,
+			new TypeBasedServiceDescription(lifetime: LifetimeType.TRANSIENT,
 				type: typeof(Mocks.EnumerableTestService), implementationType: typeof(Mocks.EnumerableTestService))
 		};
 		using var container = new Container(activationBuilder, descriptors);

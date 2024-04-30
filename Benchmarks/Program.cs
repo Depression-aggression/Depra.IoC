@@ -8,17 +8,24 @@ using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using BenchmarkDotNet.Validators;
+using Depra.IoC.Benchmarks;
 
-namespace Depra.IoC.Benchmarks;
+var benchmark = BenchmarkSwitcher.FromTypes([
+	typeof(ContainerBenchmark)
+]);
 
-public static class Program
+IConfig configuration = DefaultConfig.Instance
+	.AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance))
+	.AddValidator(JitOptimizationsValidator.FailOnError)
+	.AddDiagnoser(MemoryDiagnoser.Default)
+	.WithOptions(ConfigOptions.DisableOptimizationsValidator)
+	.WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest));
+
+if (args.Length > 0)
 {
-	private static void Main()
-	{
-		BenchmarkRunner.Run(typeof(Program).Assembly, DefaultConfig.Instance
-			.AddValidator(JitOptimizationsValidator.FailOnError)
-			.AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance))
-			.AddDiagnoser(MemoryDiagnoser.Default)
-			.WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest)));
-	}
+	benchmark.Run(args, configuration);
+}
+else
+{
+	benchmark.RunAll(configuration);
 }

@@ -31,8 +31,10 @@ namespace Depra.IoC.Exceptions
 
 		private static class Conditional
 		{
+			// ReSharper disable UnusedMember.Local
 			private const string TRUE = "DEBUG";
 			private const string FALSE = "THIS_IS_JUST_SOME_RANDOM_STRING_THAT_IS_NEVER_DEFINED";
+			// ReSharper restore UnusedMember.Local
 
 #if DEBUG || DEV_BUILD
 			public const string ENSURE = TRUE;
