@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>default</LangVersion>
+        <Nullable>disable</Nullable>
+        <AssemblyName>Depra.IoC.Plugins</AssemblyName>
+        <RootNamespace>Depra.IoC.Plugins</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IoC.QoL\IoC.QoL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Mono.Cecil" Version="0.11.5" />
+    </ItemGroup>
+
+</Project>
