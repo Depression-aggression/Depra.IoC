@@ -38,7 +38,7 @@ public sealed class PluginConfiguration {
 		var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 		foreach (var dll in dlls.Where(x => IsSuitable(x.FullName))) {
 			var loadedAssembly = LoadAssembly(dll, assemblies);
-			builder.RegisterAssemblyModules(loadedAssembly);
+			builder.RegisterAssemblyPlugins(loadedAssembly);
 		}
 	}
 
