@@ -1,6 +1,8 @@
+// SPDX-License-Identifier: Apache-2.0
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
+
 using Depra.IoC.Activation;
 using Depra.IoC.Plugins.Mocks;
-using FluentAssertions;
 
 namespace Depra.IoC.Plugins.UnitTests;
 
@@ -20,7 +22,7 @@ public sealed class PluginConfigurationTests {
 	[Fact]
 	public void Build_ShouldReturnsContainerWithTestServices() {
 		// Arrange:
-		var serviceType = typeof(TestPlugin.IServiceA);
+		var serviceType = typeof(StubPlugin.IServiceA);
 
 		// Act:
 		var container = _configuration.Build(_activation);

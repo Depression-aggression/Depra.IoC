@@ -9,8 +9,8 @@ namespace Depra.IoC.Plugins;
 public abstract class Plugin {
 	internal void Load(IContainerBuilder containerBuilder) {
 		Guard.AgainstNull(containerBuilder, nameof(containerBuilder));
-		LoadOverride(containerBuilder);
+		Configure(containerBuilder);
 	}
 
-	protected abstract void LoadOverride(IContainerBuilder builder);
+	protected abstract void Configure(IContainerBuilder builder);
 }
