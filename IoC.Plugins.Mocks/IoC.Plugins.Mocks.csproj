@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>12</LangVersion>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Depra.IoC.Plugins.Mocks</AssemblyName>
+        <RootNamespace>Depra.IoC.Plugins.Mocks</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IoC.Plugins\IoC.Plugins.csproj" />
+    </ItemGroup>
+
+</Project>
