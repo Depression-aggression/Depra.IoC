@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <AssemblyName>Depra.IoC.Composition</AssemblyName>
+        <RootNamespace>Depra.IoC.Composition</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\IoC.QoL\IoC.QoL.csproj" />
+      <ProjectReference Include="..\IoC\IoC.csproj" />
+    </ItemGroup>
+
+</Project>

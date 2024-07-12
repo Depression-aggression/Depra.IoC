@@ -3,10 +3,10 @@
 
 using System;
 using System.Reflection;
-using Depra.IoC.QoL.Injection.Factory;
+using Depra.IoC.Injection.Factory;
 using Depra.IoC.Scope;
 
-namespace Depra.IoC.QoL.Injection.Resolvers
+namespace Depra.IoC.Injection.Resolvers
 {
 	public sealed class TypedDependencyResolver : IDependencyResolver
 	{
@@ -22,8 +22,7 @@ namespace Depra.IoC.QoL.Injection.Resolvers
 		void IDependencyResolver.Resolve(IScope scope, object target)
 		{
 			const BindingFlags BINDING_ATTR = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-			var fields = target.GetType().GetFields(BINDING_ATTR);
-			foreach (var field in fields)
+			foreach (var field in target.GetType().GetFields(BINDING_ATTR))
 			{
 				if (field.IsStatic == false && Array.Exists(_types, x => x == field.FieldType))
 				{

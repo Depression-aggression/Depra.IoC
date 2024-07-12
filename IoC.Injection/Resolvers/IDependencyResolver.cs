@@ -3,7 +3,7 @@
 
 using Depra.IoC.Scope;
 
-namespace Depra.IoC.QoL.Injection.Resolvers
+namespace Depra.IoC.Injection.Resolvers
 {
 	public interface IDependencyResolver
 	{

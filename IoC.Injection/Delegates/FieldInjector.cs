@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
-namespace Depra.IoC.QoL.Injection.Delegates
+namespace Depra.IoC.Injection.Delegates
 {
 	public delegate void FieldInjector(object target, object value);
 }

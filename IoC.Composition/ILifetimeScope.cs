@@ -3,7 +3,7 @@
 
 using Depra.IoC.QoL.Builder;
 
-namespace Depra.IoC.QoL.Composition
+namespace Depra.IoC.Composition
 {
 	public interface ILifetimeScope
 	{

@@ -3,14 +3,10 @@
 
 using Depra.IoC.Scope;
 
-namespace Depra.IoC.QoL.Composition
+namespace Depra.IoC.Composition
 {
 	public interface ICompositionRoot
 	{
-		void Register();
-
-		void Resolve(IScope scope);
-
-		void Release();
+		void Compose(IScope scope);
 	}
 }
